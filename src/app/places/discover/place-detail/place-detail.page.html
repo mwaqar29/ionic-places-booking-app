@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>place-detail</ion-title>
+    <ion-title>Place Detail</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/places"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-button (click)="onBookPlace()">
+    Book Place
+  </ion-button>
 
 </ion-content>
