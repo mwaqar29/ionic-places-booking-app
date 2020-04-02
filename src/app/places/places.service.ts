@@ -13,8 +13,8 @@ export class PlacesService {
       'https://imgs.6sqft.com/wp-content/uploads/2014/06/21042534/Felix_Warburg_Mansion_007.jpg',
       149.99),
     new PlacesModel('p2',
-      'Manhattan Mansion ',
-      'In the heart of NYC 2',
+      'Los Angeles Palace',
+      'Lost with the Angels',
       'https://imgs.6sqft.com/wp-content/uploads/2014/06/21042534/Felix_Warburg_Mansion_007.jpg',
       189.99),
     new PlacesModel('p3',
@@ -30,7 +30,7 @@ export class PlacesService {
   }
 
   getPlace(id: string) {
-    return {...this._places.find(p => p.id === id)};
+    return { ...this._places.find(p => p.id === id) };
   }
 
   constructor() { }

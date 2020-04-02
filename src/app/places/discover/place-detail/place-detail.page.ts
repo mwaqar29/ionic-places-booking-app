@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
 import { CreateBookingComponent } from 'src/app/bookings/create-booking/create-booking.component';
 import { PlacesService } from '../../places.service';
 import { PlacesModel } from '../../places.model';
@@ -18,7 +18,8 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
-    private placesService: PlacesService
+    private placesService: PlacesService,
+    private actionSheetController: ActionSheetController
   ) { }
 
   ngOnInit() {
@@ -36,10 +37,44 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     console.log('destroy place detail page');
   }
 
-  onBookPlace() {
+  async onBookPlace() {
+
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Choose an action',
+      buttons: [
+        {
+          text: 'Select Date',
+          handler: () => {
+            this.openBookingModal('select');
+          }
+        },
+        {
+          text: 'Random Date',
+          handler: () => {
+            this.openBookingModal('random');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  openBookingModal(mode: 'select' | 'random') {
+    console.log(mode);
     this.modalCtrl.create({
       component: CreateBookingComponent,
-      componentProps: { selectedPlace: this.place }
+      componentProps: {
+        selectedPlace: this.place,
+        selectedMode: mode
+      }
     }).then(modalEl => {
       modalEl.present();
       return modalEl.onDidDismiss();

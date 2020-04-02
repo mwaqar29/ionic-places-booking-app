@@ -37,3 +37,20 @@ export class AppComponent {
 
 }
 
+
+// Components to use
+/*
+- datetime
+- fab
+- infinitescroll
+- avatar
+- menu-split-pane
+- popover (top right options)
+- progress bar
+- skeleton-text
+- range
+- refresher
+- reorder
+- slides
+- toast
+*/
