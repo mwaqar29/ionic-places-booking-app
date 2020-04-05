@@ -1,26 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BookingService } from './bookings.service';
 import { BookingModel } from './bookings.model';
-import { IonItemSliding, AlertController } from '@ionic/angular';
+import { IonItemSliding, AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bookings',
   templateUrl: './bookings.page.html',
   styleUrls: ['./bookings.page.scss'],
 })
-export class BookingsPage implements OnInit {
+export class BookingsPage implements OnInit, OnDestroy {
   bookings: BookingModel[];
+  private bookingSub: Subscription;
 
   constructor(
     private bookingService: BookingService,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
-    this.bookings = this.bookingService.bookings;
+    this.bookingSub = this.bookingService.bookings.subscribe(bookings => {
+      this.bookings = bookings;
+    });
     console.log(this.bookings);
+  }
+
+  ngOnDestroy() {
+    if (this.bookingSub) {
+      this.bookingSub.unsubscribe();
+    }
   }
 
   // onEdit(bookingId: string, slidingItem: IonItemSliding) {
@@ -31,8 +42,8 @@ export class BookingsPage implements OnInit {
 
   async onDeletePresentAlert(bookingId: string, slidingItem: IonItemSliding) {
     const alert = await this.alertController.create({
-      header: 'Delete Booking',
-      message: 'Are you sure you want to delete this booking ?',
+      header: 'Cancel Booking',
+      message: 'Are you sure you want to cancel this booking ?',
       buttons: [
         {
           text: 'Cancel',
@@ -45,8 +56,11 @@ export class BookingsPage implements OnInit {
         {
           text: 'Delete',
           handler: () => {
-            this.bookings = this.bookings.filter((booking) => {
-              return bookingId !== booking.id;
+            this.loadingController.create({
+              message: 'Cancelling...'
+            }).then(loadingEl => {
+              loadingEl.present();
+              this.bookingService.cancelBooking(bookingId).subscribe(() => loadingEl.dismiss());
             });
             slidingItem.close();
           }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, IonMenu } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './auth/auth.service';
@@ -30,7 +30,7 @@ export class AppComponent {
     });
   }
 
-  onLogout() {
+  onLogout(ionMenu: IonMenu) {
     this.authService.logout();
     this.router.navigateByUrl('/auth');
   }
@@ -41,16 +41,25 @@ export class AppComponent {
 // Components to use
 /*
 - datetime
-- fab
 - infinitescroll
 - avatar
-- menu-split-pane
 - popover (top right options)
 - progress bar
-- skeleton-text
 - range
-- refresher
 - reorder
 - slides
-- toast
+
+Features:
+- filter
+- share
+- call
+- selected side menu highlight
+- one time tutorial
+- dialer open for call from app
+- corner option (three dots)
+- fab with option list
+- Calendar
+
+Native Features:
+// To be listed from capacitor && IONIC docs
 */

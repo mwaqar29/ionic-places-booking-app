@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { PlacesModel } from 'src/app/places/places.model';
 import { ModalController } from '@ionic/angular';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-booking',
@@ -10,15 +11,30 @@ import { ModalController } from '@ionic/angular';
 export class CreateBookingComponent implements OnInit {
   @Input() selectedPlace: PlacesModel;
   @Input() selectedMode: string;
+  @ViewChild('f', { static: true }) form: NgForm;
 
   constructor(
     private modalCtrl: ModalController,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.selectedPlace.availableFrom.toISOString());
+  }
 
   onBookPlace() {
-    this.modalCtrl.dismiss({ message: 'This is a dummy message' }, 'confirm');
+    console.log('onBook Place');
+    if (this.form.invalid) {
+      return;
+    }
+    this.modalCtrl.dismiss({
+      bookingData: {
+        firstName: this.form.value.firstName,
+        lastName: this.form.value.lastName,
+        guestNumber: +this.form.value.guestNumber,
+        startDate: new Date(this.form.value.startDate),
+        endDate: new Date(this.form.value.endDate)
+      }
+    }, 'confirm');
   }
 
   onCancel() {

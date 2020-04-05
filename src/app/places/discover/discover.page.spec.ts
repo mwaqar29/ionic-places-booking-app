@@ -9,7 +9,7 @@ describe('DiscoverPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DiscoverPage ],
+      declarations: [DiscoverPage],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
@@ -22,3 +22,5 @@ describe('DiscoverPage', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
