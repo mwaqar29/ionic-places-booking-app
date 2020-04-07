@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-
+import { Capacitor, Plugins } from '@capacitor/core';
 import { Platform, IonMenu } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -15,8 +13,6 @@ export class AppComponent {
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private authService: AuthService,
     private router: Router
   ) {
@@ -25,8 +21,9 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      if (Capacitor.isPluginAvailable('SplashScreen')) {
+        Plugins.SplashScreen.hide();
+      }
     });
   }
 
@@ -40,7 +37,6 @@ export class AppComponent {
 
 // Components to use
 /*
-- datetime
 - infinitescroll
 - avatar
 - popover (top right options)
@@ -50,15 +46,13 @@ export class AppComponent {
 - slides
 
 Features:
-- filter
+- dark mode
+- calendar
 - share
 - call
 - selected side menu highlight
-- one time tutorial
 - dialer open for call from app
-- corner option (three dots)
 - fab with option list
-- Calendar
 
 Native Features:
 // To be listed from capacitor && IONIC docs
