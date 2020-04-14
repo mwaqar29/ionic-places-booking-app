@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, ModalController, ActionSheetController, LoadingController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
 import { CreateBookingComponent } from 'src/app/bookings/create-booking/create-booking.component';
 import { PlacesService } from '../../places.service';
 import { PlacesModel } from '../../places.model';
 import { Subscription } from 'rxjs';
 import { BookingService } from 'src/app/bookings/bookings.service';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/auth/auth.service'
+import { Plugins, Capacitor } from '@capacitor/core';
 
+const { Clipboard } = Plugins;
 
 @Component({
   selector: 'app-place-detail',
@@ -27,7 +29,9 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private actionSheetController: ActionSheetController,
     private bookingService: BookingService,
     private loadingController: LoadingController,
-    private authService: AuthService
+    private toastController: ToastController,
+    private authService: AuthService,
+    private elementRef: ElementRef
   ) { }
 
   ngOnInit() {
@@ -120,5 +124,24 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Address Copied!',
+      duration: 1750,
+    });
+    toast.present();
+  }
+
+  async copyAddress(value: string) {
+    if (Capacitor.isPluginAvailable('Clipboard')) {
+      Clipboard.write({
+        string: value
+      });
+      this.presentToast();
+    } else {
+      console.log('Clipboard Plugin not available');
+    }
   }
 }
