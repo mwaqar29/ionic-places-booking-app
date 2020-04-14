@@ -19,6 +19,17 @@
         <p>{{ place.description }}</p>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3" class="ion-text-center">
+        <div class="address">
+          <p>
+            <ion-icon slot="start" name="location"></ion-icon>
+            <span (click)="copyAddress(copyableAddress.innerText)" #copyableAddress> 12, Seaside Residency, 18 Siglap
+              Link, Singapore, 448873</span>
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
     <ion-row *ngIf="isBookable">
       <ion-col size-sm="6" offset-sm="3" class="ion-text-center ion-padding">
         <ion-button (click)="onBookPlace()">
